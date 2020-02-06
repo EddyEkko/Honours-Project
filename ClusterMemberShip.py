@@ -34,3 +34,51 @@ print()
 print('Cluster 3: ' + str(GOCluster3))
 
 
+OGMOdata = pd.read_csv(r"C:\Users\user\Documents\pdf\bioinfo\MOBoxPlotting.csv")
+
+
+Cluster1Data = OGMOdata[OGMOdata['Gene name (unique)'].isin(GOCluster1)]
+
+
+Cluster1Data['Control'] = (Cluster1Data['3dOO'] + Cluster1Data['3dOO.1'] + Cluster1Data['3dOO.2'] + Cluster1Data['3dOO.3'] + Cluster1Data['3dOO.4'])/5
+Cluster1Data['Injury'] = (Cluster1Data['3dCCl4'] + Cluster1Data['3dCCl4.1'] + Cluster1Data['3dCCl4.2'] + Cluster1Data['3dCCl4.3'] + Cluster1Data['3dCCl4.4'])/5
+Cluster1Data['Recovery'] = (Cluster1Data['1mCCl4'] + Cluster1Data['1mCCl4.1']  + Cluster1Data['1mCCl4.2']  + Cluster1Data['1mCCl4.3']  + Cluster1Data['1mCCl4.4'])/5 
+
+Cluster1Final = Cluster1Data[['Gene name (unique)','Control','Injury','Recovery']]
+
+Cluster1Final = Cluster1Final.set_index('Gene name (unique)')
+
+Cluster1Final.to_csv(r'C:\Users\user\Documents\pdf\bioinfo\ConsensusClustering\MOCompleteCluster1Final.csv')
+
+# --------------------
+Cluster2Data = OGMOdata[OGMOdata['Gene name (unique)'].isin(GOCluster2)]
+
+
+Cluster2Data['Control'] = (Cluster2Data['3dOO'] + Cluster2Data['3dOO.1'] + Cluster2Data['3dOO.2'] + Cluster2Data['3dOO.3'] + Cluster2Data['3dOO.4'])/5
+Cluster2Data['Injury'] = (Cluster2Data['3dCCl4'] + Cluster2Data['3dCCl4.1'] + Cluster2Data['3dCCl4.2'] + Cluster2Data['3dCCl4.3'] + Cluster2Data['3dCCl4.4'])/5
+Cluster2Data['Recovery'] = (Cluster2Data['1mCCl4'] + Cluster2Data['1mCCl4.1']  + Cluster2Data['1mCCl4.2']  + Cluster2Data['1mCCl4.3']  + Cluster2Data['1mCCl4.4'])/5 
+
+Cluster2Final = Cluster2Data[['Gene name (unique)','Control','Injury','Recovery']]
+
+Cluster2Final = Cluster2Final.set_index('Gene name (unique)')
+
+Cluster2Final.to_csv(r'C:\Users\user\Documents\pdf\bioinfo\ConsensusClustering\MOCompleteCluster2Final.csv')
+
+
+#----------------------
+
+Cluster3Data = OGMOdata[OGMOdata['Gene name (unique)'].isin(GOCluster3)]
+
+
+Cluster3Data['Control'] = (Cluster3Data['3dOO'] + Cluster3Data['3dOO.1'] + Cluster3Data['3dOO.2'] + Cluster3Data['3dOO.3'] + Cluster3Data['3dOO.4'])/5
+Cluster3Data['Injury'] = (Cluster3Data['3dCCl4'] + Cluster3Data['3dCCl4.1'] + Cluster3Data['3dCCl4.2'] + Cluster3Data['3dCCl4.3'] + Cluster3Data['3dCCl4.4'])/5
+Cluster3Data['Recovery'] = (Cluster3Data['1mCCl4'] + Cluster3Data['1mCCl4.1']  + Cluster3Data['1mCCl4.2']  + Cluster3Data['1mCCl4.3']  + Cluster3Data['1mCCl4.4'])/5 
+
+Cluster3Final = Cluster3Data[['Gene name (unique)','Control','Injury','Recovery']]
+
+Cluster3Final = Cluster3Final.set_index('Gene name (unique)')
+
+Cluster3Final.to_csv(r'C:\Users\user\Documents\pdf\bioinfo\ConsensusClustering\MOCompleteCluster3Final.csv')
+
+# export this data to R, and use it to make box plots. 
+# only the most cluster representative items in each cluster are used in the box plots, in order to make any trends easier to see. 
