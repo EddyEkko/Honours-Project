@@ -1,0 +1,129 @@
+import pandas as pd
+
+#goal here = extract transcript cluster memberships for k=3
+#get ready to determine if proteomic clusters still cluster together, or if they have been split into different transcriptomic clusters
+#get ready determine the GO differences between the transcript cluster members that belong to a certein P cluster, and the rest of their cluster.
+
+#-----
+
+TranscriptCompleteIC = pd.read_csv(r"C:\Users\user\Documents\pdf\bioinfo\transcriptomic data\TranscriptsCompleteItemConsensus.csv") #dataframe containing the cluster membership of every item for every attempted k value
+
+ThreeClusters = TranscriptCompleteIC.loc[TranscriptCompleteIC['k'] == 3]
+
+MostRepresentative = ThreeClusters.loc[ThreeClusters['itemConsensus'] >= 0.80]
+
+Cluster1Best = MostRepresentative.loc[MostRepresentative['cluster'] == 1]
+
+Cluster2Best = MostRepresentative.loc[MostRepresentative['cluster'] == 2]
+
+Cluster3Best = MostRepresentative.loc[MostRepresentative['cluster'] == 3]
+
+TC1 = []
+TC2 = []
+TC3 = []
+
+for x in Cluster1Best['item']:
+    TC1.append(x)
+    
+for x in Cluster2Best['item']:
+    TC2.append(x)
+    
+for x in Cluster3Best['item']:
+    TC3.append(x)
+    
+print(len(TC1))
+print(len(TC2))
+print(len(TC3))
+print()
+
+#extracting the transcriptomic clusters
+#in both the proteomic and transcriptomic clusters, cluster 3 has very few members. This indicates that cluster 3 could just contain outliers.
+#----
+
+Resolvable = pd.read_csv(r'C:\Users\user\Documents\pdf\bioinfo\ConsensusClustering\MOCompleteCluster1Final.csv')
+C1genes = Resolvable['Gene name (unique)'].tolist()
+print(len(C1genes))
+
+Augmented = pd.read_csv(r'C:\Users\user\Documents\pdf\bioinfo\ConsensusClustering\MOCompleteCluster2Final.csv')
+C2genes = Augmented['Gene name (unique)'].tolist()
+print(len(C2genes))
+print()
+#gets Proteomic Clusters 1 and 2 in the form of a list
+#-----
+
+C1zTC1overlaps = []
+C1zTC2overlaps = []
+C1zTC3overlaps = []
+
+for x in C1genes:
+    if x.upper() in TC1:
+        C1zTC1overlaps.append(x.upper())
+    if x.upper() in TC2:
+        C1zTC2overlaps.append(x.upper())    
+    if x.upper() in TC3:
+        C1zTC3overlaps.append(x.upper())
+
+print(len(C1zTC1overlaps))
+print(len(C1zTC2overlaps))
+print(len(C1zTC3overlaps))
+print()
+
+C2zTC1overlaps = []
+C2zTC2overlaps = []
+C2zTC3overlaps = []
+
+for x in C2genes:
+    if x.upper() in TC1:
+        C2zTC1overlaps.append(x.upper())
+    if x.upper() in TC2:
+        C2zTC2overlaps.append(x.upper())    
+    if x.upper() in TC3:
+        C2zTC3overlaps.append(x.upper())
+        
+print(len(C2zTC1overlaps))
+print(len(C2zTC2overlaps))
+print(len(C2zTC3overlaps))
+
+#gets the various proteomic-transcriptomic cluster overlaps.
+#-----
+
+TranscriptCluster1File =open( r'C:\Users\user\Documents\pdf\bioinfo\transcriptomic data\TC1.txt','a')
+for x in TC1:
+    TranscriptCluster1File.write(x)
+    TranscriptCluster1File.write('\n')
+
+TranscriptCluster1File.close()
+
+TranscriptCluster2File =open( r'C:\Users\user\Documents\pdf\bioinfo\transcriptomic data\TC2.txt','a')
+for x in TC2:
+    TranscriptCluster2File.write(x)
+    TranscriptCluster2File.write('\n')
+
+TranscriptCluster2File.close()
+
+#extracts transcriptomic cluster memberships
+#-----
+    
+P1vT1File =open( r'C:\Users\user\Documents\pdf\bioinfo\transcriptomic data\P1vT1Overlaps.txt','a')
+for x in C1zTC1overlaps:
+    P1vT1File.write(x)
+    P1vT1File.write('\n')
+P1vT1File.close()
+
+P1vT2File =open( r'C:\Users\user\Documents\pdf\bioinfo\transcriptomic data\P1vTC2Overlaps.txt','a')
+for x in C1zTC2overlaps:
+    P1vT2File.write(x)
+    P1vT2File.write('\n')
+P1vT2File.close()
+
+P2vT1File =open( r'C:\Users\user\Documents\pdf\bioinfo\transcriptomic data\P2vTC1Overlaps.txt','a')
+for x in C2zTC1overlaps:
+    P2vT1File.write(x)
+    P2vT1File.write('\n')
+P2vT1File.close()
+
+P2vT2File =open( r'C:\Users\user\Documents\pdf\bioinfo\transcriptomic data\P2vTC2Overlaps.txt','a')
+for x in C2zTC2overlaps:
+    P2vT2File.write(x)
+    P2vT2File.write('\n')
+P2vT2File.close()
